@@ -4,22 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Currency Converter</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Basic styles for the page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .input-container {
+            margin-bottom: 20px;
+        }
+
+        input, select {
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 8px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            color: white;
+            background-color: #3498db;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .result {
+            font-size: 20px;
+            margin-top: 20px;
+            font-weight: bold;
+            color: #27ae60;
+        }
+    </style>
 </head>
 <body>
-
-    <header>
+    <div class="container">
         <h1>Currency Converter</h1>
-    </header>
 
-    <main>
-        <section>
+        <div class="input-container">
             <label for="amount">Amount:</label>
-            <input type="number" id="amount" placeholder="Enter amount">
-        </section>
-        
-        <section>
-            <label for="fromCurrency">From:</label>
+            <input type="number" id="amount" placeholder="Enter amount" required>
+        </div>
+
+        <div class="input-container">
+            <label for="fromCurrency">From Currency:</label>
             <select id="fromCurrency">
                 <option value="USD">USD</option>
                 <option value="EUR">EUR</option>
@@ -27,10 +87,10 @@
                 <option value="GBP">GBP</option>
                 <option value="KM">KM</option>
             </select>
-        </section>
-        
-        <section>
-            <label for="toCurrency">To:</label>
+        </div>
+
+        <div class="input-container">
+            <label for="toCurrency">To Currency:</label>
             <select id="toCurrency">
                 <option value="USD">USD</option>
                 <option value="EUR">EUR</option>
@@ -38,16 +98,40 @@
                 <option value="GBP">GBP</option>
                 <option value="KM">KM</option>
             </select>
-        </section>
-        
-        <button id="convertButton">Convert</button>
+        </div>
 
-        <section>
-            <h2>Converted Amount:</h2>
-            <p id="result"></p>
-        </section>
-    </main>
+        <button onclick="convertCurrency()">Convert</button>
 
-    <script src="script.js"></script>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const exchangeRates = {
+            USD: 1.0,
+            EUR: 0.94,
+            TRY: 35.0,
+            GBP: 0.82,
+            KM: 1.94
+        };
+
+        function convertCurrency() {
+            const amount = parseFloat(document.getElementById("amount").value);
+            const fromCurrency = document.getElementById("fromCurrency").value;
+            const toCurrency = document.getElementById("toCurrency").value;
+
+            if (isNaN(amount)) {
+                alert("Please enter a valid amount");
+                return;
+            }
+
+            if (fromCurrency === toCurrency) {
+                document.getElementById("result").innerText = "The currencies are the same.";
+                return;
+            }
+
+            const convertedAmount = amount * (exchangeRates[toCurrency] / exchangeRates[fromCurrency]);
+            document.getElementById("result").innerText = `${amount} ${fromCurrency} = ${convertedAmount.toFixed(2)} ${toCurrency}`;
+        }
+    </script>
 </body>
 </html>
